@@ -1,0 +1,37 @@
+version: '3'
+services:
+
+  redis:
+    restart: always
+    image: redis:6.0-alpine
+    networks:
+      - internal_network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+    volumes:
+      - ./redis:/data
+
+  relay:
+    # build: .
+    image: nyaone/pub-relay
+    restart: always
+    environment: 
+      RELAY_DOMAIN: relay.nya.one
+      RELAY_HOST: 0.0.0.0
+      RELAY_PORT: 8085
+      RELAY_PKEY_PATH: "/relay/key/actor.pem"
+      REDIS_URL: "redis://redis/relay"
+    networks:
+      - external_network
+      - internal_network
+    ports:
+      - "127.0.0.1:8085:8085"
+    depends_on:
+      - redis
+    volumes:
+      - ./key:/relay/key:ro
+
+networks:
+  external_network:
+  internal_network:
+    internal: true
