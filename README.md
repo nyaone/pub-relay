@@ -37,6 +37,19 @@ Requirements:
 - Only payloads addressed to `https://www.w3.org/ns/activitystreams#Public` will be re-broadcast
   - Deliver all activities except `Create`
 
+## Installation (With docker)
+
+1. Download `docker-compose.yml` `.env` from source
+
+2. edit `.env` file `RELAY_DOMAIN`
+
+3. Generate actor key: 
+  ``` sh
+  openssl genrsa 2048 > actor.pem
+  ```
+
+4. `docker-compose pull && docker-compose up -d` 
+
 ## Contributors
 
 - [RX14](https://source.joinmastodon.org/RX14) creator, maintainer

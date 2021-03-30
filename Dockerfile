@@ -8,26 +8,26 @@ RUN apk -U upgrade && \
     apk add \
     build-base \
     openssl-dev \
+    zlib-dev \
     crystal \
     shards
 
 COPY . ./
 
 RUN shards update
-RUN shards install --production
 RUN shards build --release
 
 FROM base AS runner
 
-ENV RELAY_DOMAIN=relay.nya.one
-ENV RELAY_HOST=0.0.0.0
-ENV RELAY_PORT=8085
-ENV RELAY_PKEY_PATH=/relay/key/actor.pem
-ENV REDIS_URL=redis://redis/relay
-
-ENTRYPOINT ["/relay/bin/pub-relay"]
 VOLUME ["/relay/data"]
 
-COPY --from=builder /relay/bin ./bin
+RUN apk -U upgrade && \
+    apk add \
+    pcre \
+    libevent \
+    gcc \
+    openssl
+
+COPY --from=builder /relay/bin /relay/bin
 
 CMD ["/relay/bin/pub-relay"]

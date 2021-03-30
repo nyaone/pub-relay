@@ -8,7 +8,7 @@ raise "REDIS_URL must start with redis:// or rediss://" unless ENV["REDIS_URL"].
 domain = ENV["RELAY_DOMAIN"]
 redis = Redis::PooledClient.new(url: ENV["REDIS_URL"])
 bindhost = ENV["RELAY_HOST"]? || "localhost"
-port = (ENV["RELAY_PORT"]? || 8085).to_i
+port = ENV["RELAY_PORT"].to_i? || 8085
 
 private_key_path = ENV["RELAY_PKEY_PATH"]
 private_key = OpenSSL::PKey::RSA.new(File.read(private_key_path))
