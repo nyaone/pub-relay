@@ -13,7 +13,7 @@ services:
 
   relay:
 #    build: .
-    image: nyaone/pub-relay
+    image: nyaone/pub-relay:latest
     restart: always
     networks:
       - external_network

@@ -1,9 +1,9 @@
-pub-relay (fork by noellabo)
+pub-relay (Docker ver.)
 =========
 
 ...is a service-type ActivityPub actor that will re-broadcast anything sent to it to anyone who subscribes to it.
 
-Endpoints:
+## Endpoints:
 
 - `GET /actor`
 - `POST /inbox`
@@ -12,7 +12,7 @@ Endpoints:
 - `GET /nodeinfo/2.0`
 - `GET /stats`
 
-Operations:
+## Operations:
 
 - for Mastodon or compatible implementation
   - Send a Follow activity to the inbox to subscribe
@@ -29,7 +29,7 @@ Operations:
 - Send anything else to the inbox to broadcast it
   - Supported types: `Create`, `Update`, `Delete`, `Announce`, `Undo`, `Move`
 
-Requirements:
+## Requirements:
 
 - All requests must be HTTP-signed with a valid actor
 - Only payloads that contain a linked-data signature will be re-broadcast
@@ -49,6 +49,14 @@ Requirements:
   ```
 
 4. `docker-compose pull && docker-compose up -d` 
+
+## Attention
+
+1. Remember to create a reverse-proxy config rule in your web server if you'd like to add a SSL certificate.
+
+2. It may need quite a few time to finish start-up work (or much request before working properly?). Before that, it will return "Invalid Signature: cryptographic signature did not verify" error. You may need to quit and rejoin if this occasion occur.
+
+3. There's no built-in homepage, so you may like to write one if needed. As for server status, just check the `/stats` endpoint. It will return a JSON-formatted status info. You can surely handle that in front-end.
 
 ## Contributors
 
