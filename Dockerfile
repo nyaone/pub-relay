@@ -14,6 +14,7 @@ RUN apk -U upgrade && \
 
 COPY . ./
 
+RUN shards init
 RUN shards update
 RUN shards build --release
 
