@@ -18,13 +18,6 @@ WORKDIR /relay
 
 VOLUME ["/relay/data"]
 
-RUN apk -U upgrade && \
-    apk add \
-    pcre \
-    libevent \
-    gcc \
-    openssl
-
 COPY --from=builder /relay/bin /relay/bin
 
 CMD ["/relay/bin/pub-relay"]
