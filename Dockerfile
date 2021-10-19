@@ -1,23 +1,20 @@
-FROM alpine:3.12 AS base
+## Why crystal 0.36.1? 
+### circuit_breaker requires < 1.0.0 while openssl_ext requires >= 0.36.1 , 
+### so this is the only valid version (sigh)
+
+
+FROM crystallang/crystal:0.36.1-alpine-build AS builder
 
 WORKDIR /relay
-
-FROM base AS builder
-
-RUN apk -U upgrade && \
-    apk add \
-    build-base \
-    openssl-dev \
-    zlib-dev \
-    crystal \
-    shards
 
 COPY . ./
 
 RUN shards update
 RUN shards build --release
 
-FROM base AS runner
+FROM crystallang/crystal:0.36.1-alpine AS runner
+
+WORKDIR /relay
 
 VOLUME ["/relay/data"]
 
