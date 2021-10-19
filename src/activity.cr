@@ -30,7 +30,7 @@ class PubRelay::Activity
     d = @duplicate
     return d unless d.nil?
 
-    @duplicate = redis.zadd("activity_id", (@published || Time.utc).to_unix_f, @id, nx: true) == 0
+    @duplicate = redis.zadd("activity_id", (@published || Time.utc).to_unix_f.to_s, @id, nx: true) == 0
   end
 
   def follow?
@@ -68,7 +68,7 @@ class PubRelay::Activity
     to.includes?(PUBLIC_COLLECTION) || cc.includes?(PUBLIC_COLLECTION)
   end
 
-  FORWARD_TYPES = {"Update", "Delete", "Undo", "Move"}
+  FORWARD_TYPES = {"Update", "Delete", "Undo", "Move", "Like", "Add", "Remove"}
   RELAY_TYPES   = {"Create", "Announce"}
 
   def valid_for_rebroadcast?
